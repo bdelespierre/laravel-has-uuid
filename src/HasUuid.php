@@ -7,7 +7,7 @@ use Webpatser\Uuid\Uuid;
 trait HasUuid
 {
     /**
-     * Uuid models are no longer capable to auto-increment index
+     * Uuid models are no longer capable to auto-increment index.
      *
      * @return bool
      */
@@ -32,7 +32,7 @@ trait HasUuid
     }
 
     /**
-     * Generates an UUID
+     * Generates an UUID.
      *
      * @return string
      */
@@ -46,9 +46,9 @@ trait HasUuid
     }
 
     /**
-     * Get the UUID version (default 4)
+     * Get the UUID version (default 4).
      *
-     * @return integer
+     * @return int
      */
     public function getUuidVersion(): int
     {
@@ -56,14 +56,14 @@ trait HasUuid
     }
 
     /**
-     * Get the UUID node
+     * Get the UUID node.
      *
      * @return string|null
      */
     public function getUuidNode()
     {
         if (! isset($this->uuidNode)) {
-            return null;
+            return;
         }
 
         // if the node is a string starting with ':'
@@ -77,7 +77,7 @@ trait HasUuid
     }
 
     /**
-     * Get the UUID namespace
+     * Get the UUID namespace.
      *
      * @return string|null
      */
@@ -114,7 +114,7 @@ trait HasUuid
     }
 
     /**
-     * Helper that converts a string to hexadecimal characters
+     * Helper that converts a string to hexadecimal characters.
      *
      * @param  string $string
      * @return string
