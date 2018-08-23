@@ -80,14 +80,14 @@ If you discover any security related issues, please email benjamin@delespierre.p
 
 MIT. Please see the [license file](license.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/bdelespierre/has-uuid.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/bdelespierre/has-uuid.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/bdelespierre/has-uuid/master.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/bdelespierre/laravel-has-uuid.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/bdelespierre/laravel-has-uuid.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/bdelespierre/laravel-has-uuid/master.svg?style=flat-square
 [ico-styleci]: https://styleci.io/repos/145884475/shield
 
-[link-packagist]: https://packagist.org/packages/bdelespierre/has-uuid
-[link-downloads]: https://packagist.org/packages/bdelespierre/has-uuid
-[link-travis]: https://travis-ci.org/bdelespierre/has-uuid
+[link-packagist]: https://packagist.org/packages/bdelespierre/laravel-has-uuid
+[link-downloads]: https://packagist.org/packages/bdelespierre/laravel-has-uuid
+[link-travis]: https://travis-ci.org/bdelespierre/laravel-has-uuid
 [link-styleci]: https://styleci.io/repos/145884475
 [link-author]: https://github.com/bdelespierre
 [link-contributors]: ../../contributors]
