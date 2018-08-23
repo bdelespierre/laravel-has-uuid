@@ -1,6 +1,6 @@
 {
     "name": "bdelespierre/laravel-has-uuid",
-    "description": ":description",
+    "description": "Never struggle with UUIDs again! Provides support for v1 to v5 UUID in your models. Automatically.",
     "license": "MIT",
     "authors": [
         {
