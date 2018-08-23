@@ -1,4 +1,4 @@
-# has-uuid
+# Laravel Has UUID
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
@@ -16,6 +16,42 @@ $ composer require bdelespierre/laravel-has-uuid
 ```
 
 ## Usage
+
+Add the following to your models:
+
+```PHP
+namespace App;
+
+use Bdelespierre\HasUuid\HasUuid;
+use Illuminate\Database\Eloquent\Model;
+
+class Foo extends Model
+{
+    use HasUuid;
+}
+```
+
+And this goes in your migrations:
+
+```PHP
+Schema::create('foos', function (Blueprint $table) {
+    $table->uuid('id');
+    // ...
+    $table->timestamps();
+    $table->primary('id');
+});
+```
+
+Then you can simply enjoy automatic UUID generation:
+
+```
+>>> $f = Foo::create()
+=> App\Foo {#2920
+     id: "7e50eff6-3973-4f8b-94c4-a9461add6e22",
+     updated_at: "2018-08-23 17:07:57",
+     created_at: "2018-08-23 17:07:57",
+   }
+```
 
 ## Change log
 
