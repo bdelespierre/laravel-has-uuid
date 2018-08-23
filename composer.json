@@ -1,0 +1,40 @@
+{
+    "name": "bdelespierre/laravel-has-uuid",
+    "description": ":description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benjamin Delespierre",
+            "email": "benjamin@delespierre.pro",
+            "homepage": "https://benjamin.delespierre.pro"
+        }
+    ],
+    "homepage": "https://github.com/bdelespierre/has-uuid",
+    "keywords": ["Laravel", "has-uuid"],
+    "require": {
+        "illuminate/support": "~5",
+        "webpatser/laravel-uuid": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0",
+        "orchestra/testbench": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bdelespierre\\HasUuid\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bdelespierre\\HasUuid\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+            ],
+            "aliases": {
+            }
+        }
+    }
+}
