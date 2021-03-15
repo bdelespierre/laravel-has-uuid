@@ -71,7 +71,7 @@ trait HasUuid
             $key = Config::get('app.key');
 
             $key = Str::startsWith($key, 'base64:')
-                ? bin2hex(base64_decode(Str::after($key, 'base64:')))
+                ? self::hash($key)
                 : self::strToHex($key);
 
             // Webpatser/UUID needs 16 bytes for namespace
@@ -94,12 +94,11 @@ trait HasUuid
         return $value;
     }
 
-    /**
-     * Helper that converts a string to hexadecimal characters.
-     *
-     * @param  string $string
-     * @return string
-     */
+    protected static function hash(string $key): string
+    {
+        return bin2hex(base64_decode(Str::after($key, 'base64:')));
+    }
+
     protected static function strToHex(string $string): string
     {
         for ($i = 0, $hex = ''; $i < strlen($string); $i++) {
