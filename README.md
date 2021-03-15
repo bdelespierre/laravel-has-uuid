@@ -4,8 +4,9 @@
 [![Total Downloads][ico-downloads]][link-downloads]
 [![Build Status][ico-travis]][link-travis]
 [![StyleCI][ico-styleci]][link-styleci]
+[![Quality Score][ico-scrutinizer]][link-scrutinizer]
 
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
+Provides support for UUID key type in Eloquent models.
 
 ## Installation
 
@@ -17,40 +18,25 @@ $ composer require bdelespierre/laravel-has-uuid
 
 ## Usage
 
-Add the following to your models:
-
 ```PHP
-namespace App;
+namespace App\Models;
 
 use Bdelespierre\HasUuid\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
-class Foo extends Model
+class User extends Model
 {
     use HasUuid;
 }
 ```
 
-And this goes in your migrations:
+Migration:
 
 ```PHP
-Schema::create('foos', function (Blueprint $table) {
-    $table->uuid('id');
-    // ...
-    $table->timestamps();
-    $table->primary('id');
+Schema::create('users', function (Blueprint $table) {
+    $table->uuid('id')->primary();
+    // other properties go here...
 });
-```
-
-Then you can simply enjoy automatic UUID generation:
-
-```
->>> $f = Foo::create()
-=> App\Foo {#2920
-     id: "7e50eff6-3973-4f8b-94c4-a9461add6e22",
-     updated_at: "2018-08-23 17:07:57",
-     created_at: "2018-08-23 17:07:57",
-   }
 ```
 
 ## Change log
@@ -69,7 +55,7 @@ Please see [contributing.md](contributing.md) for details and a todolist.
 
 ## Security
 
-If you discover any security related issues, please email benjamin@delespierre.pro instead of using the issue tracker.
+If you discover any security related issues, please email [benjamin.delespierre@gmail.com](mailto:benjamin.delespierre@gmail.com) instead of using the issue tracker.
 
 ## Credits
 
@@ -84,10 +70,12 @@ MIT. Please see the [license file](license.md) for more information.
 [ico-downloads]: https://img.shields.io/packagist/dt/bdelespierre/laravel-has-uuid.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/bdelespierre/laravel-has-uuid/master.svg?style=flat-square
 [ico-styleci]: https://styleci.io/repos/145884475/shield
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/g/bdelespierre/laravel-has-uuid.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/bdelespierre/laravel-has-uuid
 [link-downloads]: https://packagist.org/packages/bdelespierre/laravel-has-uuid
 [link-travis]: https://travis-ci.org/bdelespierre/laravel-has-uuid
 [link-styleci]: https://styleci.io/repos/145884475
+[link-scrutinizer]: https://scrutinizer-ci.com/g/bdelespierre/laravel-has-uuid
 [link-author]: https://github.com/bdelespierre
 [link-contributors]: ../../contributors]

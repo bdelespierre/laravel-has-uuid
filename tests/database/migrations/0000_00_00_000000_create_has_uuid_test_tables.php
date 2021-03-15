@@ -14,11 +14,10 @@ class CreateHasUuidTestTables extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('email');
             $table->timestamps();
-            $table->primary('id');
         });
 
         DB::table('users')->insert([
