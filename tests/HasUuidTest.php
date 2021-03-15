@@ -4,9 +4,6 @@ namespace Tests;
 
 use Bdelespierre\HasUuid\HasUuid;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase;
 
 class HasUuidTest extends TestCase
@@ -29,14 +26,14 @@ class HasUuidTest extends TestCase
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
 
     protected function makeModel()
     {
         return new class extends Model {
             use HasUuid;
-            protected $table = "users";
+            protected $table = 'users';
             protected $fillable = ['name', 'email'];
         };
     }
@@ -44,11 +41,11 @@ class HasUuidTest extends TestCase
     public function testSave()
     {
         $model = $this->makeModel();
-        $model->fill(['name' => "Steve BUSCEMI", 'email' => "steve.buscemi@example.com"]);
+        $model->fill(['name' => 'Steve BUSCEMI', 'email' => 'steve.buscemi@example.com']);
         $model->save();
 
         $this->assertMatchesRegularExpression(
-            "/^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i",
+            '/^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',
             $model->id,
             "Model equipped with the 'HasUuid' trait should generate valid v4 UUID upon creation"
         );
@@ -79,22 +76,22 @@ class HasUuidTest extends TestCase
         );
 
         $this->assertNull(
-            $this->makeModel()->resolveRouteBinding("not an UUID"),
+            $this->makeModel()->resolveRouteBinding('not an UUID'),
             "Model equipped with the 'HasUuid' trait should only resolve on UUID strings"
         );
 
         $this->assertTrue(
-            $this->makeModel()->resolveRouteBinding("1d4579a2-85b1-4872-931e-031eefab974b")->exists,
+            $this->makeModel()->resolveRouteBinding('1d4579a2-85b1-4872-931e-031eefab974b')->exists,
             "Model equipped with the 'HasUuid' trait should resolve on valid UUID strings"
         );
 
         $this->assertTrue(
-            $this->makeModel()->resolveRouteBinding("d449075e-1f6d-4464-8c82-9a403dfcc9fd")->exists,
+            $this->makeModel()->resolveRouteBinding('d449075e-1f6d-4464-8c82-9a403dfcc9fd')->exists,
             "Model equipped with the 'HasUuid' trait should resolve on valid UUID strings"
         );
 
         $this->assertTrue(
-            $this->makeModel()->resolveRouteBinding("af7d82e7-1dc6-42c7-8e4f-57a508b3a402")->exists,
+            $this->makeModel()->resolveRouteBinding('af7d82e7-1dc6-42c7-8e4f-57a508b3a402')->exists,
             "Model equipped with the 'HasUuid' trait should resolve on valid UUID strings"
         );
     }
@@ -105,7 +102,7 @@ class HasUuidTest extends TestCase
         $model->uuidVersion = 1;
 
         $this->assertMatchesRegularExpression(
-            "/^[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i",
+            '/^[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',
             $model->getUuid(),
             "Model equipped with the 'HasUuid' trait should generate valid v1 UUID"
         );
@@ -123,18 +120,18 @@ class HasUuidTest extends TestCase
 
     public function testGetUuidV3()
     {
-        $model = $this->makeModel()->fill(['email' => "danny.devito@example.com"]);
+        $model = $this->makeModel()->fill(['email' => 'danny.devito@example.com']);
         $model->uuidVersion = 3;
         $model->uuidNode = ':email';
 
         $this->assertMatchesRegularExpression(
-            "/^[0-9A-F]{8}-[0-9A-F]{4}-[3][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i",
+            '/^[0-9A-F]{8}-[0-9A-F]{4}-[3][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',
             $model->getUuid(),
             "Model equipped with the 'HasUuid' trait should generate valid v3 UUID"
         );
 
         $this->assertEquals(
-            "e7edf144-7809-3027-b8c5-30fb4a961ab4",
+            'e7edf144-7809-3027-b8c5-30fb4a961ab4',
             $model->getUuid(),
             "Model equipped with the 'HasUuid' trait should generate v3 UUID"
         );
@@ -145,7 +142,7 @@ class HasUuidTest extends TestCase
         $model = $this->makeModel();
 
         $this->assertMatchesRegularExpression(
-            "/^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i",
+            '/^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',
             $model->getUuid(),
             "Model equipped with the 'HasUuid' trait should generate valid v4 UUID by default"
         );
@@ -153,18 +150,18 @@ class HasUuidTest extends TestCase
 
     public function testGetUuidV5()
     {
-        $model = $this->makeModel()->fill(['email' => "silvester.stallone@example.com"]);
+        $model = $this->makeModel()->fill(['email' => 'silvester.stallone@example.com']);
         $model->uuidVersion = 5;
         $model->uuidNode = ':email';
 
         $this->assertMatchesRegularExpression(
-            "/^[0-9A-F]{8}-[0-9A-F]{4}-[5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i",
+            '/^[0-9A-F]{8}-[0-9A-F]{4}-[5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',
             $model->getUuid(),
             "Model equipped with the 'HasUuid' trait should generate valid v5 UUID"
         );
 
         $this->assertEquals(
-            "e1c84d29-2fb4-5e2b-8a3b-660045657ee1",
+            'e1c84d29-2fb4-5e2b-8a3b-660045657ee1',
             $model->getUuid(),
             "Model equipped with the 'HasUuid' trait should generate v3 UUID"
         );
@@ -177,7 +174,7 @@ class HasUuidTest extends TestCase
         $this->assertEquals(
             4,
             $model->getUuidVersion(),
-            "UUID version should be 4 by default"
+            'UUID version should be 4 by default'
         );
 
         $model->uuidVersion = 3;
@@ -195,7 +192,7 @@ class HasUuidTest extends TestCase
 
         $this->assertNull(
             $model->getUuidNode(),
-            "UUID node should be NULL by default"
+            'UUID node should be NULL by default'
         );
 
         $model->uuidNode = '123456';
@@ -206,7 +203,7 @@ class HasUuidTest extends TestCase
             "Model equipped with the 'HasUuid' trait can change their UUID node using an attribute"
         );
 
-        $model->fill(['email' => "bruce.willis@example.com"]);
+        $model->fill(['email' => 'bruce.willis@example.com']);
         $model->uuidNode = ':email';
 
         $this->assertEquals(
@@ -223,7 +220,7 @@ class HasUuidTest extends TestCase
         $this->assertEquals(
             '82a206d81d8df38c6cb95ab47a7514cf',
             $model->getUuidNamespace(),
-            "UUID namespace should be hash of app key by default"
+            'UUID namespace should be hash of app key by default'
         );
 
         $this->app['config']->set('app.key', '757787f54ace4bf38b838b8e0ad80c78');
@@ -231,7 +228,7 @@ class HasUuidTest extends TestCase
         $this->assertEquals(
             '38623833386238653061643830633738',
             $model->getUuidNamespace(),
-            "UUID namespace should be hash of app key by default"
+            'UUID namespace should be hash of app key by default'
         );
 
         $model->uuidNamespace = 'e51e84234918424aacf6fb70945fd83c';
@@ -242,7 +239,7 @@ class HasUuidTest extends TestCase
             "Model equipped with the 'HasUuid' trait can change their UUID namespace using an attribute"
         );
 
-        $model->fill(['email' => "bruce.willis@example.com"]);
+        $model->fill(['email' => 'bruce.willis@example.com']);
         $model->uuidNamespace = ':email';
 
         $this->assertEquals(
