@@ -2,40 +2,43 @@
 
 namespace Bdelespierre\HasUuid;
 
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 use Webpatser\Uuid\Uuid;
 
 trait HasUuid
 {
-    /**
-     * Uuid models are no longer capable to auto-increment index.
-     *
-     * @return bool
-     */
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
     public function getIncrementing()
     {
         return false;
     }
 
-    /**
-     * Generate a new random UUID and use if as primary key
-     * when creating a new model.
-     *
-     * @return void
-     */
     protected static function bootHasUuid()
     {
         static::creating(function ($model) {
             if (! $model->getAttribute($model->getKeyName())) {
-                $model->setAttribute($model->getKeyName(), $model->getUuid());
+                $model->setAttribute(
+                    $model->getKeyName(),
+                    $model->getUuid()
+                );
             }
         });
     }
 
-    /**
-     * Generates an UUID.
-     *
-     * @return string
-     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        if (! is_string($value) || ! Uuid::validate($value)) {
+            return null;
+        }
+
+        return parent::resolveRouteBinding($value);
+    }
+
     public function getUuid(): string
     {
         return (string) Uuid::generate(
@@ -45,72 +48,50 @@ trait HasUuid
         );
     }
 
-    /**
-     * Get the UUID version (default 4).
-     *
-     * @return int
-     */
     public function getUuidVersion(): int
     {
         return $this->uuidVersion ?? 4;
     }
 
-    /**
-     * Get the UUID node.
-     *
-     * @return string|null
-     */
-    public function getUuidNode()
+    public function getUuidNode(): ?string
     {
         if (! isset($this->uuidNode)) {
-            return;
+            return null;
         }
 
-        // if the node is a string starting with ':'
-        // then we use the value of the corresponding
-        // property as the node.
-        if (starts_with($this->uuidNode, ':')) {
-            return $this->{str_after($this->uuidNode, ':')};
-        }
-
-        return $this->uuidNode;
+        return $this->interpolate($this->uuidNode);
     }
 
-    /**
-     * Get the UUID namespace.
-     *
-     * @return string|null
-     */
-    public function getUuidNamespace()
+    public function getUuidNamespace(): ?string
     {
         // when no explicit namespace is provided,
         // the namespace is calculated from the
         // app key.
         if (! isset($this->uuidNamespace)) {
-            $key = config('app.key');
+            $key = Config::get('app.key');
 
-            if (starts_with($key, 'base64:')) {
-                $key = bin2hex(base64_decode(substr($key, 7)));
-            } else {
-                $key = self::strToHex($key);
-            }
+            $key = Str::startsWith($key, 'base64:')
+                ? bin2hex(base64_decode(Str::after($key, 'base64:')))
+                : self::strToHex($key);
 
-            // Webpatser/UUID demands a 16 bytes namespace
+            // Webpatser/UUID needs 16 bytes for namespace
             // which is *slightly* unsafe because Laravel
             // generates 32 bytes keys...
-            $key = substr($key, 32);
-
-            return $key;
+            return substr($key, 32);
         }
 
-        // if the namespace is a string starting with ':'
-        // then we use the value of the corresponding
-        // property as namespace.
-        if (starts_with($this->uuidNamespace, ':')) {
-            return $this->{str_after($this->uuidNamespace, ':')};
+        return $this->interpolate($this->uuidNamespace);
+    }
+
+    protected function interpolate(string $value): ?string
+    {
+        if (Str::startsWith($value, ':')) {
+            $value = $this->getAttribute(
+                Str::after($value, ':')
+            );
         }
 
-        return $this->uuidNamespace;
+        return $value;
     }
 
     /**
