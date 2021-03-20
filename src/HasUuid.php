@@ -2,22 +2,32 @@
 
 namespace Bdelespierre\HasUuid;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Webpatser\Uuid\Uuid;
 
 trait HasUuid
 {
+    abstract public function setKeyType($type);
+
+    abstract public function setIncrementing($value);
+
+    abstract public function getAttribute($key);
+
+    abstract public static function creating($callback);
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
-        $this->setKeyType('string')->setIncrementing(false);
+        $this->setKeyType('string');
+        $this->setIncrementing(false);
     }
 
     protected static function bootHasUuid()
     {
-        static::creating(function ($model) {
+        static::creating(function (Model $model) {
             if (! $model->getAttribute($model->getKeyName())) {
                 $model->setAttribute(
                     $model->getKeyName(),
