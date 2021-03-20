@@ -8,14 +8,11 @@ use Webpatser\Uuid\Uuid;
 
 trait HasUuid
 {
-    public function getKeyType()
+    public function __construct(array $attributes = [])
     {
-        return 'string';
-    }
+        parent::__construct($attributes);
 
-    public function getIncrementing()
-    {
-        return false;
+        $this->setKeyType('string')->setIncrementing(false);
     }
 
     protected static function bootHasUuid()

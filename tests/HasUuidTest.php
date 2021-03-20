@@ -22,7 +22,7 @@ class HasUuidTest extends TestCase
         $app['config']->set('app.key', 'base64:BoshQ0cZA0GcH7DVkOfSR4KiBtgdjfOMbLlatHp1FM8=');
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,6 +36,14 @@ class HasUuidTest extends TestCase
             protected $table = 'users';
             protected $fillable = ['name', 'email'];
         };
+    }
+
+    protected function getProtectedPropertyValue(object $object, string $name)
+    {
+        $property = (new \ReflectionClass($object))->getProperty($name);
+        $property->setAccessible(true);
+
+        return $property->getValue($object);
     }
 
     public function testSave()
@@ -58,6 +66,13 @@ class HasUuidTest extends TestCase
             $this->makeModel()->getKeyType(),
             "Model equipped with the 'HasUuid' trait key type should be 'string'"
         );
+
+        // test property value (as shown in dump/debug)
+        $this->assertEquals(
+            'string',
+            $this->getProtectedPropertyValue($this->makeModel(), 'keyType'),
+            "Model equipped with the 'HasUuid' trait keyType property should be 'string'"
+        );
     }
 
     public function testGetIncrementing()
@@ -65,6 +80,12 @@ class HasUuidTest extends TestCase
         $this->assertFalse(
             $this->makeModel()->getIncrementing(),
             "Model equipped with the 'HasUuid' trait should not increment their id"
+        );
+
+        // test property value (as shown in dump/debug)
+        $this->assertFalse(
+            $this->makeModel()->incrementing,
+            "Model equipped with the 'HasUuid' trait incrementing property should be false"
         );
     }
 
