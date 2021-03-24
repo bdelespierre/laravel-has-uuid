@@ -38,7 +38,7 @@ class HasUuidTest extends TestCase
 
     protected function makeModel()
     {
-        return new class extends Model {
+        return new class() extends Model {
             use HasUuid;
 
             protected $table = 'users';
@@ -300,7 +300,7 @@ class HasUuidTest extends TestCase
             "By default, the UUID generator is the UUID service",
         );
 
-        $this->app['uuid.generator'] = new class implements UuidGenerator {
+        $this->app['uuid.generator'] = new class() implements UuidGenerator {
             public function generate(int $version, ?string $node = null, ?string $namespace = null): string
             {
                 return '9d340bfe-c51d-4877-9cf1-932563af7e4f';
