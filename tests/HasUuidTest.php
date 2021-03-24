@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Bdelespierre\HasUuid\Contracts\UuidGenerator;
+use Bdelespierre\HasUuid\Contracts\UuidValidator;
 use Bdelespierre\HasUuid\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Orchestra\Testbench\TestCase;
@@ -20,6 +22,11 @@ class HasUuidTest extends TestCase
 
         // used for UUID v3 & v5 namespaces
         $app['config']->set('app.key', 'base64:BoshQ0cZA0GcH7DVkOfSR4KiBtgdjfOMbLlatHp1FM8=');
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return ['Bdelespierre\HasUuid\Providers\UuidServiceProvider'];
     }
 
     protected function setUp(): void
@@ -268,6 +275,61 @@ class HasUuidTest extends TestCase
             'bruce.willis@example.com',
             $model->getUuidNamespace(),
             "Model equipped with the 'HasUuid' trait can change their UUID namespace using a property attribute"
+        );
+
+        $this->app['uuid']::$defaultNamespace = '8f9c62c3724a4d989b794841fdb3e6c2';
+        $model->uuidNamespace = null;
+
+        $this->assertEquals(
+            '8f9c62c3724a4d989b794841fdb3e6c2',
+            $model->getUuidNamespace(),
+            "You can define a static UUID namespace directly on the service"
+        );
+    }
+
+    public function testUuidGeneratorProvider()
+    {
+        $this->assertInstanceOf(
+            UuidGenerator::class,
+            $this->app['uuid.generator'],
+            "You can obtain an instance of Bdelespierre\HasUuid\Contracts\UuidGenerator from the app container",
+        );
+
+        $this->assertTrue(
+            $this->app['uuid'] === $this->app['uuid.generator'],
+            "By default, the UUID generator is the UUID service",
+        );
+
+        $this->app['uuid.generator'] = new class implements UuidGenerator {
+            public function generate(int $version, ?string $node = null, ?string $namespace = null): string
+            {
+                return '9d340bfe-c51d-4877-9cf1-932563af7e4f';
+            }
+
+            public static function getDefaultNamespace(): string
+            {
+                return '9d71b438ef5c4854b867cee24c29ac35';
+            }
+        };
+
+        $this->assertFalse(
+            $this->app['uuid'] === $this->app['uuid.generator'],
+            "You should be able to override the UUID generator on the app container",
+        );
+
+        $this->assertEquals(
+            '9d340bfe-c51d-4877-9cf1-932563af7e4f',
+            $this->makeModel()->getUuid(),
+            "By overriding the UUID generator one can make the UUID generation deterministic",
+        );
+    }
+
+    public function testUuidValidatorProvider()
+    {
+        $this->assertInstanceOf(
+            UuidValidator::class,
+            $this->app['uuid.validator'],
+            "You can obtain an instance of Bdelespierre\HasUuid\Contracts\UuidValidator from the app container",
         );
     }
 }

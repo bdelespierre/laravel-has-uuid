@@ -12,7 +12,7 @@
     "homepage": "https://github.com/bdelespierre/has-uuid",
     "keywords": ["Laravel", "UUID", "Eloquent", "Model"],
     "require": {
-        "php" : "^7.0|^8.0",
+        "php" : "^7.1|^8.0",
         "illuminate/support": "~8",
         "webpatser/laravel-uuid": "^4.0"
     },
@@ -46,6 +46,7 @@
     "extra": {
         "laravel": {
             "providers": [
+                "Bdelespierre\\HasUuid\\Providers\\UuidServiceProvider"
             ],
             "aliases": {
             }

@@ -39,7 +39,7 @@ trait HasUuid
 
     public function resolveRouteBinding($value, $field = null)
     {
-        if (! is_string($value) || ! Uuid::validate($value)) {
+        if (! is_string($value) || ! app('uuid.validator')->validate($value)) {
             return null;
         }
 
@@ -48,7 +48,7 @@ trait HasUuid
 
     public function getUuid(): string
     {
-        return (string) Uuid::generate(
+        return (string) app('uuid.generator')->generate(
             $this->getUuidVersion(),
             $this->getUuidNode(),
             $this->getUuidNamespace()
@@ -62,56 +62,21 @@ trait HasUuid
 
     public function getUuidNode(): ?string
     {
-        if (! isset($this->uuidNode)) {
-            return null;
-        }
-
         return $this->interpolate($this->uuidNode);
     }
 
     public function getUuidNamespace(): ?string
     {
-        // when no explicit namespace is provided,
-        // the namespace is calculated from the
-        // app key.
-        if (! isset($this->uuidNamespace)) {
-            $key = Config::get('app.key');
-
-            $key = Str::startsWith($key, 'base64:')
-                ? self::hash($key)
-                : self::strToHex($key);
-
-            // Webpatser/UUID needs 16 bytes for namespace
-            // which is *slightly* unsafe because Laravel
-            // generates 32 bytes keys...
-            return substr($key, 32);
-        }
-
-        return $this->interpolate($this->uuidNamespace);
+        return $this->interpolate($this->uuidNamespace)
+            ?: app('uuid.generator')->getDefaultNamespace();
     }
 
-    protected function interpolate(string $value): ?string
+    protected function interpolate(?string $value): ?string
     {
         if (Str::startsWith($value, ':')) {
-            $value = $this->getAttribute(
-                Str::after($value, ':')
-            );
+            return $this->getAttribute(Str::after($value, ':'));
         }
 
         return $value;
-    }
-
-    protected static function hash(string $key): string
-    {
-        return bin2hex(base64_decode(Str::after($key, 'base64:')));
-    }
-
-    protected static function strToHex(string $string): string
-    {
-        for ($i = 0, $hex = ''; $i < strlen($string); $i++) {
-            $hex .= substr('0' . dechex(ord($string[$i])), -2);
-        }
-
-        return strtoupper($hex);
     }
 }
