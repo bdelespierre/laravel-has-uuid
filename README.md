@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="https://raw.githubusercontent.com/bdelespierre/laravel-has-uuid/master/demo.png" alt="HasUuid Example" height="366" style="max-width:100%;">
+</p>
+
 # Laravel Has UUID
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
@@ -6,7 +10,7 @@
 [![StyleCI][ico-styleci]][link-styleci]
 [![Quality Score][ico-scrutinizer]][link-scrutinizer]
 
-Provides support for UUID key type in Eloquent models.
+Provides support for UUID primary keys in Eloquent models. Built on top of [webpatser/laravel-uuid][link-laravel-uuid] :heart:
 
 ## Installation
 
@@ -41,7 +45,7 @@ Schema::create('users', function (Blueprint $table) {
 
 ## Change log
 
-Please see the [changelog](changelog.md) for more information on what has changed recently.
+Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
 
 ## Testing
 
@@ -51,7 +55,7 @@ $ composer test
 
 ## Contributing
 
-Please see [contributing.md](contributing.md) for details and a todolist.
+Please see [contributing.md](CONTRIBUTING.md) for details and a todolist.
 
 ## Security
 
@@ -64,7 +68,7 @@ If you discover any security related issues, please email [benjamin.delespierre@
 
 ## License
 
-MIT. Please see the [license file](license.md) for more information.
+MIT. Please see the [license file](LICENSE.md) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/bdelespierre/laravel-has-uuid.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/bdelespierre/laravel-has-uuid.svg?style=flat-square
@@ -78,4 +82,5 @@ MIT. Please see the [license file](license.md) for more information.
 [link-styleci]: https://styleci.io/repos/145884475
 [link-scrutinizer]: https://scrutinizer-ci.com/g/bdelespierre/laravel-has-uuid
 [link-author]: https://github.com/bdelespierre
-[link-contributors]: ../../contributors]
+[link-contributors]: https://github.com/bdelespierre/laravel-has-uuid/graphs/contributors]
+[link-laravel-uuid]: https://github.com/webpatser/laravel-uuid
