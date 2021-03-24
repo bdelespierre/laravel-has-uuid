@@ -109,7 +109,7 @@ trait HasUuid
     protected static function strToHex(string $string): string
     {
         for ($i = 0, $hex = ''; $i < strlen($string); $i++) {
-            $hex .= substr('0'.dechex(ord($string[$i])), -2);
+            $hex .= substr('0' . dechex(ord($string[$i])), -2);
         }
 
         return strtoupper($hex);

@@ -26,13 +26,14 @@ class HasUuidTest extends TestCase
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
     }
 
     protected function makeModel()
     {
         return new class extends Model {
             use HasUuid;
+
             protected $table = 'users';
             protected $fillable = ['name', 'email'];
         };
